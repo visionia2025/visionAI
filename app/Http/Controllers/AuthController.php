@@ -30,6 +30,9 @@ class AuthController extends Controller
         $email = $request->email;
         $ip = $request->ip();
         $user = User::where('email', $email)->first();
+        if ($user->idRol == 1) {
+            return back()->withErrors(['idRol' => 'Usted no tiene permiso para ver este contenido'])->withInput();
+        }
 
         if (!$user) {
             return back()->withErrors(['email' => 'El email no se encuentra registrado en el sistema'])->withInput();
@@ -85,9 +88,9 @@ class AuthController extends Controller
         ]);
     }
 
-/**
- * Funcionalidad para finalizar la sesión en la parte web
- */
+    /**
+     * Funcionalidad para finalizar la sesión en la parte web
+     */
     public function logoutWeb()
     {
         Auth::logout();
@@ -105,8 +108,8 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'birthdate' => 'required|date',
-            'password' => 'required|string|min:6',
+            'birthdate' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         // Creación del usuario

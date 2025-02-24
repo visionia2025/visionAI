@@ -33,15 +33,6 @@
                         <img src="{{ asset('img/login.png') }}" alt="Register Background" class="img-fluid">
                     </div>
                     <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         <form action="{{ route('register.submit') }}" method="POST">
                             @csrf
                             <div class="divider d-flex align-items-center my-4">
@@ -57,17 +48,23 @@
                                 <label class="form-label">Correo Electrónico</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="Ingrese su correo">
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">Fecha de Nacimiento</label>
                                 <input type="date" name="birthdate" id="birthdate" class="form-control">
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">Contraseña</label>
                                 <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese su contraseña">
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
+                            <div class="mb-3">
+                                <label class="form-label">Confirmar contraseña</label>
+                                <input type="password" name="password_confirmation"  id="password_confirmation" class="form-control" placeholder="Confirmar contraseña">
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Registrarme</button>
+                            <a href="{{ route('login') }}" class="btn btn-danger">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
                         </form>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
 Route::post('/custom-login', [AuthController::class, 'loginWeb'])->name('login.submit');
+Route::get('/custom-login', [AuthController::class, 'loginWeb'])->name('login');
 Route::post('/logout', [AuthController::class, 'logoutWeb'])->name('logout');
 
 Route::get('/custom-register', [AuthController::class, 'showRegistrationForm'])->name('register.form');
@@ -18,6 +19,7 @@ Route::get('/usuarios/{id}/edit', [UserController::class, 'edit'])->name('usuari
 Route::get('/usuarios/{id}/permisos', [UserController::class, 'permisos'])->name('usuarios.permisos');
 Route::get('/usuarios/{id}/logs', [UserController::class, 'logs'])->name('usuarios.logs');
 Route::get('/usuarios/{id}/inactivar', [UserController::class, 'inactivar'])->name('usuarios.inactivar');
+Route::post('/usuario-register', [UserController::class, 'createProcess'])->name('usuarioRegister.submit');
 
 
 Route::get('/', function () {

@@ -96,6 +96,10 @@
                     $clase_div = 'col-sm-2';
                     $estilo = 'padding-top: 30px;';
                     break;
+                case 'usuarios.edit':
+                    $clase_div = 'col-sm-6';
+                    $estilo = 'padding:30px 319px 0px 0px';
+                    break;
                 default:
                     $clase_div = 'col-sm-6';
                     $estilo = 'padding:30px 400px 0px 0px';

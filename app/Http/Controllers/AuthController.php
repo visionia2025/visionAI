@@ -52,7 +52,7 @@ class AuthController extends Controller
         // Intentar autenticación con bcrypt
         if (Auth::attempt(['email' => $email, 'password' => $request->password])) {
             $this->registerSesion($user->id, $ip);
-            return redirect()->intended('/usuarios');
+            return redirect()->intended('/dashboard');
         } else {
             $this->registerIntentFail($user->id, $ip);
             return back()->withErrors(['password' => 'Contraseña incorrecta'])->withInput();

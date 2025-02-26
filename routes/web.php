@@ -20,7 +20,7 @@ Route::get('/usuarios/{id}/permisos', [UserController::class, 'permisos'])->name
 Route::get('/usuarios/{id}/logs', [UserController::class, 'logs'])->name('usuarios.logs');
 Route::get('/usuarios/{id}/inactivar', [UserController::class, 'inactivar'])->name('usuarios.inactivar');
 Route::post('/usuario-register', [UserController::class, 'createProcess'])->name('usuarioRegister.submit');
-
+Route::post('/usuario-update', [UserController::class, 'editProcess'])->name('usuarioUpdate.submit');
 
 Route::get('/', function () {
     return view('auth.login');

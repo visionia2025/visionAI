@@ -41,11 +41,22 @@ class UserController extends Controller
         return view('usuarios.permisos', compact('usuario'));
     }
 
-    public function inactivar($id)
+    public function inactivar(Request $request)
     {
+        $id = $request->id;
         $usuario = User::findOrFail($id);
-        $usuario->update(['activo' => false]);
-        return redirect()->route('usuarios.lstUsuarios')->with('success', 'Usuario inactivado');
+        $newState = $usuario->estado == 1 ? 0 : 1; 
+        if (!$usuario) {
+            return redirect()->route('usuarios.lstUsuarios')->with('danger', 'El registro solicitado no se encuentra en el sistema.');
+        }
+        $result = $usuario->update(['estado' => $newState]);
+        $redirect = redirect()->route('usuarios.lstUsuarios');
+        if(!$result){
+            $redirect->with('danger', 'Error al cambiar el estado del usuario.');
+        }else{
+            $redirect->with('success', 'El estado del usuario se actualizó exitosamente.');
+        }
+        return $redirect;
     }
 
     public function logs($id)

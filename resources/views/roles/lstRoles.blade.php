@@ -16,11 +16,11 @@ $(document).ready(function() {
 // Función para abrir la modal de confirmación
 function confirmarInactivacion(id) {
     $('#confirmModal').modal('show'); // Muestra la modal
-    $('#confirmBtn').attr('onclick', `inactivarUsuario(${id})`); // Asigna el ID dinámico al botón
+    $('#confirmBtn').attr('onclick', `inactivarRol(${id})`); // Asigna el ID dinámico al botón
 }
 // Función para redirigir a la ruta de inactivación
-function inactivarUsuario(id) {
-    window.location.href = "{{ route('usuarios.inactivar', ':id') }}".replace(':id', id);
+function inactivarRol(id) {
+    window.location.href = "{{ route('roles.inactiveProccess', ':id') }}".replace(':id', id);
 
 }
 </script>
@@ -28,9 +28,9 @@ function inactivarUsuario(id) {
     <div class="app-content">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center">
-            <h2>Lista de Usuarios</h2>
-            <a href="{{ route('usuarios.create') }}" class="btn btn-primary">
-                <i class="bi bi-person-plus"></i> Crear Usuario
+            <h2>Lista de Roles</h2>
+            <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                <i class="bi bi-shield-fill"></i> Crear rol
             </a>
         </div>
         <div class="table-responsive mt-3">
@@ -39,38 +39,27 @@ function inactivarUsuario(id) {
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
                         <th>Estado</th>
                         <th style='text-align:center'>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($usuarios as $key=>$usuario)
+                    @foreach ($lstRoles as $key=>$value)
                     <tr>
                         <td>{{ ++$key }}</td>
-                        <td>{{ $usuario->name }}</td>
-                        <td>{{ $usuario->email }}</td>
-                        <td>{{ $usuario->roles->nombreRol }}</td>
+                        <td>{{ $value->nombreRol }}</td>
                         <td>
-                            <span class="badge bg-{{ $usuario->estado == 1 ? 'success' : 'danger' }}">
-                                {{ $usuario->estado  == 1? 'Activo' : 'Inactivo' }}
+                            <span class="badge bg-{{ $value->estado == 1 ? 'success' : 'danger' }}">
+                                {{ $value->estado  == 1? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
-                        <td style="display: flex; gap: 10px; align-items: center;">
-                            <a href="{{ route('usuarios.edit', $usuario->id) }}" title='Actualizar usuario'>
+                        <td style="display:flex; gap: 6px; text-align: center;">
+                            <a href="{{ route('roles.edit', $value->id) }}" title='Actualizar Rol'>
                                 <i style='color: rgb(72 72 72) !important;' class="bi bi-pencil-fill"></i>
                             </a>
-                            <a href="javascript:void(0);" onclick="confirmarInactivacion({{ $usuario->id }})" title='Inactivar usuario'>
+                            <a href="javascript:void(0);" onclick="confirmarInactivacion({{ $value->id }})" title='Inactivar Rol'>
                                 <i style='color: rgb(72 72 72) !important;' class="bi bi-trash-fill"></i>
                             </a>
-                            <a href="{{ route('usuarios.logs', $usuario->id) }}" title='Logs'>
-                                <i style='color: rgb(72 72 72) !important;' class="bi bi-list-check"></i>
-                            </a>
-                            <a href="{{ route('usuarios.permisos', $usuario->id) }}" title='Permisos de usuario'>
-                                <i style='color: rgb(72 72 72) !important;' class="bi bi-shield-fill"></i>
-                            </a>
-
                         </td>                       
                     </tr>
                     @endforeach
@@ -88,7 +77,7 @@ function inactivarUsuario(id) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ¿Estás seguro de que deseas cambiar el estado del usuario?
+                ¿Estás seguro de que deseas cambiar el estado del rol?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>

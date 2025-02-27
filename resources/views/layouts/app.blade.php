@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>VisionIA | Dashboard</title>
+    <title>VisionAI</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css" integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg=" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous"/>
@@ -55,26 +55,68 @@
       <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <div class="sidebar-brand">
           <a href="./index.html" class="brand-link">
-            <span class="brand-text fw-light">VisionIA</span>
+            <span class="brand-text fw-light">VisionAI</span>
           </a>
         </div>
         <div class="sidebar-wrapper">
+        @php
+          $currentRoute = Route::currentRouteName();
+          $dashboard = '';
+          $roles = '';
+          $usuarios = '';
+             switch ($currentRoute) {
+                case 'usuarios.lstUsuarios':
+                    $clase_div = 'col-sm-4';
+                    $estilo = 'padding:30px 400px 0px 0px';
+                    $usuarios = 'active';
+                    break;
+                case 'dashboard':
+                    $clase_div = 'col-sm-2';
+                    $estilo = 'padding-top: 30px;';
+                    $dashboard = 'active';
+                    break;
+                case 'usuarios.edit':
+                    $clase_div = 'col-sm-6';
+                    $estilo = 'padding:30px 319px 0px 0px';
+                    $usuarios = 'active';
+                    break;
+                case 'roles.lstRoles':
+                    $clase_div = 'col-sm-4';
+                    $estilo = 'padding:30px 450px 0px 0px';
+                    $roles = 'active';
+                    break;
+                case 'roles.create':
+                    $clase_div = 'col-sm-6';
+                    $estilo = 'padding:30px 500px 0px 0px';
+                    $roles = 'active';
+                    break;
+                case 'roles.edit':
+                    $clase_div = 'col-sm-6';
+                    $estilo = 'padding:30px 440px 0px 0px';
+                    $roles = 'active';
+                    break;
+                default:
+                    $clase_div = 'col-sm-6';
+                    $estilo = 'padding:30px 400px 0px 0px';
+                    break;
+            }
+          @endphp
           <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
               <li class="nav-item">
-                <a href="{{ route('dashboard') }}" class="nav-link active">
+                <a href="{{ route('dashboard') }}" class="nav-link {{$dashboard}}">
                   <i class="nav-icon bi bi-graph-down"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('usuarios.lstUsuarios')}}" class="nav-link">
+                <a href="{{ route('usuarios.lstUsuarios')}}" class="nav-link {{$usuarios}}">
                   <i class="nav-icon bi bi-people-fill"></i>
                   <p>Usuarios</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('usuarios.lstUsuarios')}}" class="nav-link">
+                <a href="{{ route('roles.lstRoles')}}" class="nav-link {{$roles}}">
                   <i class="nav-icon bi bi-shield-fill"></i>
                   <p>Roles</p>
                 </a>
@@ -84,29 +126,7 @@
         </div>
       </aside>
       <main class="app-main">
-        <div class="app-content">
-          @php
-          $currentRoute = Route::currentRouteName();
-             switch ($currentRoute) {
-                case 'usuarios.lstUsuarios':
-                    $clase_div = 'col-sm-4';
-                    $estilo = 'padding:30px 400px 0px 0px';
-                    break;
-                case 'dashboard':
-                    $clase_div = 'col-sm-2';
-                    $estilo = 'padding-top: 30px;';
-                    break;
-                case 'usuarios.edit':
-                    $clase_div = 'col-sm-6';
-                    $estilo = 'padding:30px 319px 0px 0px';
-                    break;
-                default:
-                    $clase_div = 'col-sm-6';
-                    $estilo = 'padding:30px 400px 0px 0px';
-                    break;
-            }
-          @endphp
-         
+        <div class="app-content">         
           <div class="app-content" style="{{$estilo}}">
             <div class="row">
                 <div class="{{$clase_div}}">
@@ -134,6 +154,17 @@
                         <li class="breadcrumb-item active"><a href="{{ route('usuarios.lstUsuarios') }}">Lista de usuarios</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Logs de usuario</li>
                         @endif
+                        @if($currentRoute == 'roles.lstRoles')
+                        <li class="breadcrumb-item active" aria-current="page">Lista de roles</li>
+                        @endif
+                        @if($currentRoute == 'roles.create')
+                        <li class="breadcrumb-item active"><a href="{{ route('roles.lstRoles') }}">Lista de roles</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Crear rol</li>
+                        @endif
+                        @if($currentRoute == 'roles.edit')
+                        <li class="breadcrumb-item active"><a href="{{ route('roles.lstRoles') }}">Lista de roles</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Actualizar rol</li>
+                        @endif
                     </ol>
                 </div>
             </div>
@@ -146,6 +177,12 @@
                           <li>{{ $error }}</li>
                       @endforeach
                   </ul>
+              </div>
+          @endif
+          @if (session('danger'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  {{ session('danger') }}
               </div>
           @endif
           @if (session('success'))

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Crear Usuario</h2>
+    <h2>Actualizar Usuario</h2>
     <form action="{{ route('usuarioUpdate.submit') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -36,7 +36,7 @@
             <input type="password" name="password_confirmation"  id="password_confirmation" class="form-control" placeholder="Confirmar contraseña">
         </div>
         <button type="submit" class="btn btn-primary">
-            <i class="bi bi-check-lg"></i> Guardar Usuario
+            <i class="bi bi-check-lg"></i> Actualizar Usuario
         </button>
         <a href="{{ route('usuarios.lstUsuarios') }}" class="btn btn-danger">
             <i class="bi bi-arrow-left"></i> Cancelar

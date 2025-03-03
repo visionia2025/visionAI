@@ -1,212 +1,134 @@
 @extends('layouts.app')
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  
+  <script src="{{ asset('js/dashboard.js') }}"></script>
+
+    </script>
 
   <!-- Contenido principal -->
   <div class="app-content">
-          <div class="container-fluid">
-               <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
-                  <div class="info-box">
-                    <span class="info-box-icon text-bg-primary shadow-sm">
-                      <i class="bi bi-gear-fill"></i>
-                    </span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">CPU Traffic</span>
-                      <span class="info-box-number">
-                        10
-                        <small>%</small>
-                      </span>
-                    </div>
-                  </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box">
+            <span class="info-box-icon text-bg-primary shadow-sm">
+              <i class="bi bi-gear-fill"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">CPU Traffic</span>
+              <span class="info-box-number">10<small>%</small></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box">
+            <span class="info-box-icon text-bg-danger shadow-sm">
+              <i class="bi bi-hand-thumbs-up-fill"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Likes</span>
+              <span class="info-box-number">41,410</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box">
+            <span class="info-box-icon text-bg-success shadow-sm">
+              <i class="bi bi-cart-fill"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Sales</span>
+              <span class="info-box-number">760</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+          <div class="info-box">
+            <span class="info-box-icon text-bg-warning shadow-sm">
+              <i class="bi bi-people-fill"></i>
+            </span>
+            <div class="info-box-content">
+              <span class="info-box-text">Total usuarios</span>
+              <span class="info-box-number" id="user_register"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-----INICIO DE GRAFICO de cantidad de reconocimientos--->
+      <div class="row">
+        <!-- Gráfico de Cantidad de Reconocimientos -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h3 class="card-title">Cantidad de reconocimientos por tipo</h3>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                  <div class="info-box">
-                    <span class="info-box-icon text-bg-danger shadow-sm">
-                      <i class="bi bi-hand-thumbs-up-fill"></i>
-                    </span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">Likes</span>
-                      <span class="info-box-number">41,410</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                  <div class="info-box">
-                    <span class="info-box-icon text-bg-success shadow-sm">
-                      <i class="bi bi-cart-fill"></i>
-                    </span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">Sales</span>
-                      <span class="info-box-number">760</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                  <div class="info-box">
-                    <span class="info-box-icon text-bg-warning shadow-sm">
-                      <i class="bi bi-people-fill"></i>
-                    </span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">New Members</span>
-                      <span class="info-box-number">2,000</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="card mb-4">
-                  <div class="card-header border-0">
+                <div class="card-body">
                     <div class="d-flex justify-content-between">
-                      <h3 class="card-title">Online Store Visitors</h3>
-                      <a
-                        href="javascript:void(0);"
-                        class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                        >View Report</a
-                      >
+                        <p class="fs-5 fw-bold"><span id="total-recognitions">0</span> Reconocimientos</p>
                     </div>
-                  </div>
-                  <div class="card-body">
+                    <div id="recognitionChart"></div>
+                    <span id="genUrl" 
+                        data-url="{{ route('datosReconocimiento') }}" 
+                        data-getUserRegistrationsByMonth="{{ route('getUserRegistrationsByMonth') }}">
+                    </span>
+                </div>
+            </div>
+        </div>    
+      <!-----INICIO DE GRAFICO de cantidad de reconocimientos--->
+   
+        <!-- Gráfico de Usuarios Registrados -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                  <h3 class="card-title">Cantidad de Usuarios Registrados</h3>
+                </div>
+                <div class="card-body">
                     <div class="d-flex">
-                      <p class="d-flex flex-column">
-                        <span class="fw-bold fs-5">820</span> <span>Visitors Over Time</span>
-                      </p>
-                      <p class="ms-auto d-flex flex-column text-end">
-                        <span class="text-success"> <i class="bi bi-arrow-up"></i> 12.5% </span>
-                        <span class="text-secondary">Since last week</span>
-                      </p>
+                        <p class="d-flex flex-column">
+                        <span class="fs-5 fw-bold"><span id="total-users">0 </span> Usuarios Registrados en el Año</span>
+                        </p>
                     </div>
-                    <div class="position-relative mb-4"><div id="visitors-chart"></div></div>
-                    <div class="d-flex flex-row justify-content-end">
-                      <span class="me-2">
-                        <i class="bi bi-square-fill text-primary"></i> This Week
-                      </span>
-                      <span> <i class="bi bi-square-fill text-secondary"></i> Last Week </span>
+                    <div class="position-relative mb-4">
+                        <div id="users-chart"></div>
                     </div>
-                  </div>
                 </div>
-                <div class="card mb-4">
-                  <div class="card-header border-0">
-                    <h3 class="card-title">Products</h3>
-                    <div class="card-tools">
-                      <a href="#" class="btn btn-tool btn-sm"> <i class="bi bi-download"></i> </a>
-                      <a href="#" class="btn btn-tool btn-sm"> <i class="bi bi-list"></i> </a>
-                    </div>
-                  </div>
-                  <div class="card-body table-responsive p-0">
-                    <table class="table table-striped align-middle">
-                      <thead>
-                        <tr>
-                          <th>Product</th>
-                          <th>Price</th>
-                          <th>Sales</th>
-                          <th>More</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <img src="../../../..//AdminLTE-master/dist/assets/img/default-150x150.png" alt="Product 1" class="rounded-circle img-size-32 me-2" />
-                            Some Product
-                          </td>
-                          <td>$13 USD</td>
-                          <td>
-                            <small class="text-success me-1">
-                              <i class="bi bi-arrow-up"></i>
-                              12%
-                            </small>
-                            12,000 Sold
-                          </td>
-                          <td>
-                            <a href="#" class="text-secondary"> <i class="bi bi-search"></i> </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img src="../../dist/assets/img/default-150x150.png" alt="Product 1" class="rounded-circle img-size-32 me-2" />
-                            Another Product
-                          </td>
-                          <td>$29 USD</td>
-                          <td>
-                            <small class="text-info me-1">
-                              <i class="bi bi-arrow-down"></i>
-                              0.5%
-                            </small>
-                            123,234 Sold
-                          </td>
-                          <td>
-                            <a href="#" class="text-secondary"> <i class="bi bi-search"></i> </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img src="../../dist/assets/img/default-150x150.png" alt="Product 1" class="rounded-circle img-size-32 me-2" />
-                            Amazing Product
-                          </td>
-                          <td>$1,230 USD</td>
-                          <td>
-                            <small class="text-danger me-1">
-                              <i class="bi bi-arrow-down"></i>
-                              3%
-                            </small>
-                            198 Sold
-                          </td>
-                          <td>
-                            <a href="#" class="text-secondary"> <i class="bi bi-search"></i> </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img src="../../dist/assets/img/default-150x150.png" alt="Product 1" class="rounded-circle img-size-32 me-2" />
-                            Perfect Item
-                            <span class="badge text-bg-danger">NEW</span>
-                          </td>
-                          <td>$199 USD</td>
-                          <td>
-                            <small class="text-success me-1">
-                              <i class="bi bi-arrow-up"></i>
-                              63%
-                            </small>
-                            87 Sold
-                          </td>
-                          <td>
-                            <a href="#" class="text-secondary"> <i class="bi bi-search"></i> </a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            </div>
+        </div>
+      </div>
+      <div class="row" style='padding-top:20px'>
+      </div>
+      <div class="row">
+      <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h3 class="card-title">Enfermedades visuales</h3>
                 </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="card mb-4">
-                  <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                      <h3 class="card-title">Sales</h3>
-                      <a href="javascript:void(0);" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" View Report</a
-                      >
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="d-flex">
-                      <p class="d-flex flex-column">
-                        <span class="fw-bold fs-5">$18,230.00</span> <span>Sales Over Time</span>
-                      </p>
-                      <p class="ms-auto d-flex flex-column text-end">
-                        <span class="text-success"> <i class="bi bi-arrow-up"></i> 33.1% </span>
-                        <span class="text-secondary">Since Past Year</span>
-                      </p>
-                    </div>
-                    <div class="position-relative mb-4"><div id="sales-chart"></div></div>
-                    <div class="d-flex flex-row justify-content-end">
-                      <span class="me-2">
-                        <i class="bi bi-square-fill text-primary"></i> This year
-                      </span>
-                      <span> <i class="bi bi-square-fill text-secondary"></i> Last year </span>
-                    </div>
-                  </div>
+                <div class="card-body">
+                  <div id="chart"></div>
                 </div>
-                <div class="card">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h3 class="card-title">Distribución de Enfermedades Visuales por Rango de Edad</h3>
+                </div>
+                <div class="card-body">
+                <div id="grafico"></div>
+                </div>
+            </div>
+      </div>
+
+
+
+      
+
+<!---------
+<div class="card">
                   <div class="card-header border-0">
                     <h3 class="card-title">Online Store Overview</h3>
                     <div class="card-tools">
@@ -257,9 +179,11 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
+----->
+                
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

@@ -4,12 +4,16 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ReconocimientoController;
+use App\Http\Controllers\DashboardController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::put('/user/update', [AuthController::class, 'update']);
 Route::post('/reconocimiento', [ReconocimientoController::class, 'registrarReconocimiento']);
+Route::get('/datosReconocimiento', [DashboardController::class, 'datosReconocimiento'])->name('datosReconocimiento');
+Route::get('/getUserRegistrationsByMonth', [DashboardController::class, 'getUserRegistrationsByMonth'])->name('getUserRegistrationsByMonth');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
